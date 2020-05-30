@@ -1,23 +1,20 @@
 use amethyst::core::timing::Time;
 use amethyst::{
-    assets::{AssetStorage, Handle, Loader, AssetLoaderSystemData},
-    core::{
-        transform::Transform,
-        Parent,
-    },
-    ecs::prelude::{Component, DenseVecStorage, Entity},
+    assets::{AssetLoaderSystemData, AssetStorage, Handle, Loader},
+    window::{MonitorIdent, Window},
+    core::{transform::Transform, Parent},
+    ecs::prelude::{ReadExpect, DenseVecStorage, Entity},
     prelude::*,
     renderer::{
-        camera::{Camera},
-        rendy::mesh::{Normal, Tangent, Position, TexCoord},
+        camera::Camera,
         formats::texture::ImageFormat,
-        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat},
-        Texture,
-        Mesh,
-        shape::Shape,
-        mtl::{Material, MaterialDefaults},
         light::{Light, PointLight},
+        mtl::{Material, MaterialDefaults},
         palette::rgb::Rgb,
+        rendy::mesh::{Normal, Position, Tangent, TexCoord},
+        shape::Shape,
+        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat},
+        Mesh, Texture,
     },
     ui::{Anchor, TtfFormat, UiText, UiTransform},
 };
@@ -26,9 +23,10 @@ use crate::player::initialise_player;
 
 fn initialise_camera(world: &mut World, parent: Entity) {
     let mut transform = Transform::default();
-    transform.set_translation_xyz(0.0, 0.0, 10.0);
+    transform.set_translation_xyz(0.0, 0.0, 3.0);
 
-    world.create_entity()
+    world
+        .create_entity()
         .with(Camera::standard_3d(1024.0, 768.0))
         .with(Parent { entity: parent })
         .with(transform)
@@ -47,41 +45,29 @@ fn initialise_floor(world: &mut World) {
 
     let material_defaults = world.read_resource::<MaterialDefaults>().0.clone();
     let material = world.exec(|loader: AssetLoaderSystemData<'_, Material>| {
-            loader.load_from_data(
-                Material {
-                    ..material_defaults
-                },
-                (),
-            )
-        },
-    );
+        loader.load_from_data(
+            Material {
+                ..material_defaults
+            },
+            (),
+        )
+    });
 
-    let mut transform1 = Transform::default();
-    transform1.set_translation_xyz(0.0, 0.0, 0.0);
+    for i in 0..100 {
+        let mut transform = Transform::default();
+        let x = (i % 10) as f32 * 4.0_f32 - 20_f32;
+        let y = (i / 10) as f32 * 4.0_f32 - 20_f32;
 
-    let mut transform2 = Transform::default();
-    transform2.set_translation_xyz(4.0, 0.0, 0.0);
+        transform.set_translation_xyz(x, y, 0.0);
 
-    let mut transform3 = Transform::default();
-    transform3.set_translation_xyz(-4.0, 0.0, 0.0);
-
-    world.create_entity()
+        world
+        .create_entity()
         .with(mesh.clone())
         .with(material.clone())
-        .with(transform1)
+        .with(transform)
         .build();
 
-    world.create_entity()
-        .with(mesh.clone())
-        .with(material.clone())
-        .with(transform2)
-        .build();
-
-    world.create_entity()
-        .with(mesh)
-        .with(material)
-        .with(transform3)
-        .build();
+    }
 }
 
 fn initialize_light(world: &mut World) {
@@ -89,21 +75,17 @@ fn initialize_light(world: &mut World) {
         intensity: 10.0,
         color: Rgb::new(1.0, 1.0, 1.0),
         ..PointLight::default()
-    }.into();
+    }
+    .into();
 
     let mut transform = Transform::default();
     transform.set_translation_xyz(5.0, 5.0, 20.0);
 
-    world
-        .create_entity()
-        .with(light)
-        .with(transform)
-        .build();
+    world.create_entity().with(light).with(transform).build();
 }
 
 #[derive(Default)]
-pub struct Rpg {
-}
+pub struct Rpg {}
 
 impl SimpleState for Rpg {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
@@ -113,5 +95,14 @@ impl SimpleState for Rpg {
         initialize_light(world);
         let player = initialise_player(world);
         initialise_camera(world, player);
+        enter_fullscreen(world);
     }
+}
+
+fn enter_fullscreen(world: &mut World) {
+    let window = world.read_resource::<Window>();
+    let monitor_ident = MonitorIdent::from_primary(&*window);
+    let monitor_id = monitor_ident.monitor_id(&*window);
+
+    window.set_fullscreen(Some(monitor_id));
 }

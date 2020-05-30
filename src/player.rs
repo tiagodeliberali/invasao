@@ -1,27 +1,24 @@
 use amethyst::core::timing::Time;
 use amethyst::{
-    assets::{AssetStorage, Handle, Loader, AssetLoaderSystemData},
+    assets::{AssetLoaderSystemData, AssetStorage, Handle, Loader},
     core::transform::Transform,
     ecs::prelude::{Component, DenseVecStorage, Entity},
     prelude::*,
     renderer::{
-        camera::{Camera},
-        rendy::mesh::{Normal, Tangent, Position, TexCoord},
+        camera::Camera,
         formats::texture::ImageFormat,
-        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat},
-        Texture,
-        Mesh,
-        shape::Shape,
-        mtl::{Material, MaterialDefaults},
         light::{Light, PointLight},
+        mtl::{Material, MaterialDefaults},
         palette::rgb::Rgb,
+        rendy::mesh::{Normal, Position, Tangent, TexCoord},
+        shape::Shape,
+        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat},
+        Mesh, Texture,
     },
     ui::{Anchor, TtfFormat, UiText, UiTransform},
 };
 
-
-pub struct Player {
-}
+pub struct Player {}
 
 impl Player {
     fn new() -> Player {
@@ -36,7 +33,7 @@ impl Component for Player {
 pub fn initialise_player(world: &mut World) -> Entity {
     let mesh = world.exec(|loader: AssetLoaderSystemData<'_, Mesh>| {
         loader.load_from_data(
-            Shape::Sphere(100, 100)
+            Shape::Cube
                 .generate::<(Vec<Position>, Vec<Normal>, Vec<Tangent>, Vec<TexCoord>)>(None)
                 .into(),
             (),
@@ -45,14 +42,13 @@ pub fn initialise_player(world: &mut World) -> Entity {
 
     let material_defaults = world.read_resource::<MaterialDefaults>().0.clone();
     let material = world.exec(|loader: AssetLoaderSystemData<'_, Material>| {
-            loader.load_from_data(
-                Material {
-                    ..material_defaults
-                },
-                (),
-            )
-        },
-    );
+        loader.load_from_data(
+            Material {
+                ..material_defaults
+            },
+            (),
+        )
+    });
 
     let player_transform = Transform::default();
 

@@ -1,5 +1,14 @@
 use amethyst::{
+    shrev::{
+        EventChannel,
+        Event,
+    },
     core::transform::TransformBundle,
+    controls::{
+        MouseFocusUpdateSystemDesc,
+        CursorHideSystemDesc,
+    },
+    input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{
         plugins::{RenderPbr3D, RenderToWindow},
@@ -7,15 +16,14 @@ use amethyst::{
         RenderingBundle,
     },
     utils::application_root_dir,
-    input::{InputBundle, StringBindings}
 };
 
-mod rpg;
 mod player;
+mod rpg;
 mod systems;
 
 use rpg::Rpg;
-use systems::{PlayerMoveSystem, CameraMoveSystem};
+use systems::{CameraMoveSystem, PlayerMoveSystem};
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -30,7 +38,6 @@ fn main() -> amethyst::Result<()> {
     let input_bundle =
         InputBundle::<StringBindings>::new().with_bindings_from_file(binding_path)?;
 
-
     let game_data = GameDataBuilder::default()
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
@@ -42,8 +49,10 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
-        .with(PlayerMoveSystem, "player_move_system", &["input_system"]);
-        // .with(CameraMoveSystem, "camera_move_system", &["input_system"]);
+        .with(PlayerMoveSystem, "player_move_system", &["input_system"])
+        .with(CameraMoveSystem, "camera_move_system", &["input_system"])
+        .with_system_desc(MouseFocusUpdateSystemDesc::default(), "mouse_focus", &[])
+        .with_system_desc(CursorHideSystemDesc::default(), "cursor_hide", &[]);
 
     let mut game = Application::new(assets_dir, Rpg::default(), game_data)?;
     game.run();
