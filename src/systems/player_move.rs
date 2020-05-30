@@ -1,13 +1,13 @@
 use crate::player::Player;
 use amethyst::{
-    shrev::{EventChannel, ReaderId},
-    winit::{DeviceEvent, Event},
     core::math::Vector3,
     core::timing::Time,
     core::Transform,
     derive::SystemDesc,
     ecs::{Join, Read, ReadStorage, System, SystemData, WriteStorage},
     input::{InputHandler, StringBindings},
+    shrev::{EventChannel, ReaderId},
+    winit::{DeviceEvent, Event},
 };
 
 const MOUSE_VELOCITY: f32 = 0.05;

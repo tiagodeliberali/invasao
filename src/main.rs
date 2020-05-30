@@ -42,8 +42,16 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
-        .with_system_desc(PlayerMoveSystemDesc::default(), "player_move_system", &["input_system"])
-        .with_system_desc(CameraMoveSystemDesc::default(), "camera_move_system", &["input_system"])
+        .with_system_desc(
+            PlayerMoveSystemDesc::default(),
+            "player_move_system",
+            &["input_system"],
+        )
+        .with_system_desc(
+            CameraMoveSystemDesc::default(),
+            "camera_move_system",
+            &["input_system"],
+        )
         .with_system_desc(MouseFocusUpdateSystemDesc::default(), "mouse_focus", &[])
         .with_system_desc(CursorHideSystemDesc::default(), "cursor_hide", &[]);
 

@@ -1,13 +1,12 @@
 use amethyst::{
-    shrev::{EventChannel, ReaderId},
-    winit::{DeviceEvent, Event},
     core::timing::Time,
     core::Transform,
     derive::SystemDesc,
     ecs::{Join, Read, ReadStorage, System, SystemData, WriteStorage},
     renderer::camera::Camera,
+    shrev::{EventChannel, ReaderId},
+    winit::{DeviceEvent, Event},
 };
-
 
 const VELOCITY: f32 = 0.05;
 
@@ -34,7 +33,6 @@ impl<'s> System<'s> for CameraMoveSystem {
 
     fn run(&mut self, (events, mut transforms, cameras, time): Self::SystemData) {
         for (_, transform) in (&cameras, &mut transforms).join() {
-
             for event in events.read(&mut self.event_reader) {
                 if let Event::DeviceEvent { ref event, .. } = *event {
                     if let DeviceEvent::MouseMotion { delta: (_x, y) } = *event {
