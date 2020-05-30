@@ -2,8 +2,6 @@
   axes: {
     "frontal": Emulated(pos: Key(W), neg: Key(S)),
     "lateral": Emulated(pos: Key(D), neg: Key(A)),
-    "mouse_x": Mouse(axis: X, over_extendable: false, radius:1),
-    "mouse_y": Mouse(axis: Y, over_extendable: false, radius:1),
   },
   actions: {},
 )

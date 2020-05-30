@@ -16,7 +16,7 @@ mod rpg;
 mod systems;
 
 use rpg::Rpg;
-use systems::{CameraMoveSystem, PlayerMoveSystem};
+use systems::{CameraMoveSystemDesc, PlayerMoveSystemDesc};
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -42,8 +42,8 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
-        .with(PlayerMoveSystem, "player_move_system", &["input_system"])
-        .with(CameraMoveSystem, "camera_move_system", &["input_system"])
+        .with_system_desc(PlayerMoveSystemDesc::default(), "player_move_system", &["input_system"])
+        .with_system_desc(CameraMoveSystemDesc::default(), "camera_move_system", &["input_system"])
         .with_system_desc(MouseFocusUpdateSystemDesc::default(), "mouse_focus", &[])
         .with_system_desc(CursorHideSystemDesc::default(), "cursor_hide", &[]);
 
