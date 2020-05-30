@@ -1,21 +1,14 @@
-use amethyst::core::timing::Time;
 use amethyst::{
-    assets::{AssetLoaderSystemData, AssetStorage, Handle, Loader},
+    assets::AssetLoaderSystemData,
     core::transform::Transform,
     ecs::prelude::{Component, DenseVecStorage, Entity},
     prelude::*,
     renderer::{
-        camera::Camera,
-        formats::texture::ImageFormat,
-        light::{Light, PointLight},
         mtl::{Material, MaterialDefaults},
-        palette::rgb::Rgb,
         rendy::mesh::{Normal, Position, Tangent, TexCoord},
         shape::Shape,
-        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat},
-        Mesh, Texture,
+        Mesh,
     },
-    ui::{Anchor, TtfFormat, UiText, UiTransform},
 };
 
 pub struct Player {}

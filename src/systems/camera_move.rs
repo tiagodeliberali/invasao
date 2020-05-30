@@ -3,8 +3,7 @@ use amethyst::{
     core::Transform,
     derive::SystemDesc,
     ecs::{Join, Read, ReadStorage, System, SystemData, WriteStorage},
-    input::{InputHandler, StringBindings, VirtualKeyCode},
-    prelude::*,
+    input::{InputHandler, StringBindings},
     renderer::camera::Camera,
 };
 

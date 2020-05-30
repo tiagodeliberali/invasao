@@ -1,22 +1,18 @@
-use amethyst::core::timing::Time;
 use amethyst::{
-    assets::{AssetLoaderSystemData, AssetStorage, Handle, Loader},
-    window::{MonitorIdent, Window},
+    assets::AssetLoaderSystemData,
     core::{transform::Transform, Parent},
-    ecs::prelude::{ReadExpect, DenseVecStorage, Entity},
+    ecs::prelude::Entity,
     prelude::*,
     renderer::{
         camera::Camera,
-        formats::texture::ImageFormat,
         light::{Light, PointLight},
         mtl::{Material, MaterialDefaults},
         palette::rgb::Rgb,
         rendy::mesh::{Normal, Position, Tangent, TexCoord},
         shape::Shape,
-        sprite::{SpriteRender, SpriteSheet, SpriteSheetFormat},
-        Mesh, Texture,
+        Mesh,
     },
-    ui::{Anchor, TtfFormat, UiText, UiTransform},
+    window::{MonitorIdent, Window},
 };
 
 use crate::player::initialise_player;
@@ -61,12 +57,11 @@ fn initialise_floor(world: &mut World) {
         transform.set_translation_xyz(x, y, 0.0);
 
         world
-        .create_entity()
-        .with(mesh.clone())
-        .with(material.clone())
-        .with(transform)
-        .build();
-
+            .create_entity()
+            .with(mesh.clone())
+            .with(material.clone())
+            .with(transform)
+            .build();
     }
 }
 

@@ -1,13 +1,6 @@
 use amethyst::{
-    shrev::{
-        EventChannel,
-        Event,
-    },
+    controls::{CursorHideSystemDesc, MouseFocusUpdateSystemDesc},
     core::transform::TransformBundle,
-    controls::{
-        MouseFocusUpdateSystemDesc,
-        CursorHideSystemDesc,
-    },
     input::{InputBundle, StringBindings},
     prelude::*,
     renderer::{

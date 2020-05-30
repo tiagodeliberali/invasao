@@ -1,3 +1,5 @@
+use crate::player::Player;
+use amethyst::core::math::Vector3;
 use amethyst::{
     core::timing::Time,
     core::Transform,
@@ -5,8 +7,6 @@ use amethyst::{
     ecs::{Join, Read, ReadStorage, System, SystemData, WriteStorage},
     input::{InputHandler, StringBindings},
 };
-use amethyst::core::math::Vector3;
-use crate::player::Player;
 
 const VELOCITY: f32 = 5.0;
 
@@ -30,20 +30,28 @@ impl<'s> System<'s> for PlayerMoveSystem {
             if let Some(mv_amount) = frontal_movement {
                 let frontal_vector = transform.isometry().inverse().rotation * Vector3::y();
                 let scaled_amount = VELOCITY * time.delta_seconds() * mv_amount as f32;
-                transform.set_translation_y(transform.translation().y + frontal_vector.y * scaled_amount);
-                transform.set_translation_x(transform.translation().x - frontal_vector.x * scaled_amount);
+                transform.set_translation_y(
+                    transform.translation().y + frontal_vector.y * scaled_amount,
+                );
+                transform.set_translation_x(
+                    transform.translation().x - frontal_vector.x * scaled_amount,
+                );
             }
 
             if let Some(mv_amount) = lateral_movement {
                 let lateral_vector = transform.isometry().inverse().rotation * Vector3::x();
                 let scaled_amount = VELOCITY * time.delta_seconds() * mv_amount as f32;
-                transform.set_translation_y(transform.translation().y - lateral_vector.y * scaled_amount);
-                transform.set_translation_x(transform.translation().x + lateral_vector.x * scaled_amount);
+                transform.set_translation_y(
+                    transform.translation().y - lateral_vector.y * scaled_amount,
+                );
+                transform.set_translation_x(
+                    transform.translation().x + lateral_vector.x * scaled_amount,
+                );
             }
 
             if let Some(mv_amount) = lateral_mouse_movement {
                 let scaled_amount = VELOCITY * time.delta_seconds() * mv_amount as f32;
-                transform.prepend_rotation_z_axis(- scaled_amount);
+                transform.prepend_rotation_z_axis(-scaled_amount);
             }
         }
     }
