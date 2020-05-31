@@ -1,6 +1,6 @@
 use amethyst::{
     assets::AssetLoaderSystemData,
-    core::{transform::Transform, Parent, math::Vector3},
+    core::{transform::Transform, Parent},
     ecs::prelude::Entity,
     prelude::*,
     renderer::{
@@ -14,7 +14,6 @@ use amethyst::{
     },
     window::{MonitorIdent, Window},
 };
-use amethyst_physics::prelude::*;
 
 use crate::player::initialise_player;
 
@@ -52,34 +51,16 @@ fn initialise_floor(world: &mut World) {
 
     for i in 0..100 {
         let mut transform = Transform::default();
-        let row = (i % 10) as f32 * 2.1_f32 - 10_f32;
-        let column = (i / 10) as f32 * 2.1_f32 - 10_f32;
+        let row = (i % 10) as f32 * 2.0_f32 - 10_f32;
+        let column = (i / 10) as f32 * 2.0_f32 - 10_f32;
 
         transform.set_translation_xyz(row, 0.0, column);
-
-        let shape_component = {
-            let desc = ShapeDesc::Cube {
-                half_extents: Vector3::new(1.0, 1.0, 1.0),
-            };
-            let physics_world = world.fetch::<PhysicsWorld<f32>>();
-            physics_world.shape_server().create(&desc)
-        };
-    
-        let rigid_body_component = {
-            let mut rb_desc = RigidBodyDesc::default();
-            rb_desc.mode = BodyMode::Static;
-    
-            let physics_world = world.fetch::<PhysicsWorld<f32>>();
-            physics_world.rigid_body_server().create(&rb_desc)
-        };
 
         world
             .create_entity()
             .with(mesh.clone())
             .with(material.clone())
             .with(transform)
-            .with(rigid_body_component)
-            .with(shape_component)
             .build();
     }
 }
