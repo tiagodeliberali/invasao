@@ -39,7 +39,7 @@ impl<'s> System<'s> for CameraMoveSystem {
             for event in events.read(&mut self.event_reader) {
                 if let Event::DeviceEvent { ref event, .. } = *event {
                     if let DeviceEvent::MouseMotion { delta: (_x, y) } = *event {
-                        entity.rotate_x(VELOCITY * time.delta_seconds() * y as f32);
+                        entity.rotate_vertical(VELOCITY * time.delta_seconds() * y as f32);
                     }
                 }
             }

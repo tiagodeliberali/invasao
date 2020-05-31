@@ -10,6 +10,8 @@ use amethyst::{
     },
     utils::application_root_dir,
 };
+use amethyst_nphysics::NPhysicsBackend;
+use amethyst_physics::PhysicsBundle;
 
 mod entity3d;
 mod player;
@@ -43,6 +45,7 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
+        .with_bundle(PhysicsBundle::<f32, NPhysicsBackend>::new())?
         .with_system_desc(
             PlayerMoveSystemDesc::default(),
             "player_move_system",

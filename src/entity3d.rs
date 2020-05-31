@@ -10,32 +10,32 @@ impl<'a> Entity3d<'a> {
     }
 
     pub fn up(&self) -> Vector3<f32> {
-        self.transform.isometry().inverse().rotation * Vector3::y()
+        self.transform.isometry().inverse().rotation * Vector3::x()
     }
 
     pub fn rigth(&self) -> Vector3<f32> {
-        self.transform.isometry().inverse().rotation * Vector3::x()
+        self.transform.isometry().inverse().rotation * Vector3::z()
     }
 
     pub fn walk_up(&mut self, amount: f32) {
         self.transform
-            .set_translation_y(self.transform.translation().y + self.up().y * amount);
-        self.transform
-            .set_translation_x(self.transform.translation().x - self.up().x * amount);
-    }
-
-    pub fn walk_right(&mut self, amount: f32) {
-        self.transform
-            .set_translation_y(self.transform.translation().y - self.rigth().y * amount);
+            .set_translation_z(self.transform.translation().z - self.rigth().z * amount);
         self.transform
             .set_translation_x(self.transform.translation().x + self.rigth().x * amount);
     }
 
-    pub fn rotate_z(&mut self, amount: f32) {
-        self.transform.prepend_rotation_z_axis(amount);
+    pub fn walk_right(&mut self, amount: f32) {
+        self.transform
+            .set_translation_x(self.transform.translation().x + self.up().x * amount);
+        self.transform
+            .set_translation_z(self.transform.translation().z - self.up().z * amount);
     }
 
-    pub fn rotate_x(&mut self, amount: f32) {
+    pub fn rotate_horizontal(&mut self, amount: f32) {
+        self.transform.prepend_rotation_y_axis(-amount);
+    }
+
+    pub fn rotate_vertical(&mut self, amount: f32) {
         self.transform.prepend_rotation_x_axis(-amount);
     }
 }

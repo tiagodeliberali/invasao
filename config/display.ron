@@ -1,5 +1,5 @@
 (
   title: "Invasão RPG!",
   dimensions: Some((1500, 900)),
-  maximized: true,
+  // maximized: true,
 )
