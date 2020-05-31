@@ -40,7 +40,7 @@ impl<'s> System<'s> for PlayerMoveSystem {
             let mut entity = Entity3d::new(&mut transform);
 
             if let Some(mv_amount) = input.axis_value("frontal") {
-                entity.walk_up(KEYBOARD_VELOCITY * time.delta_seconds() * mv_amount as f32)
+                entity.walk_forward(KEYBOARD_VELOCITY * time.delta_seconds() * mv_amount as f32)
             }
 
             if let Some(mv_amount) = input.axis_value("lateral") {
@@ -50,7 +50,7 @@ impl<'s> System<'s> for PlayerMoveSystem {
             for event in events.read(&mut self.event_reader) {
                 if let Event::DeviceEvent { ref event, .. } = *event {
                     if let DeviceEvent::MouseMotion { delta: (x, _y) } = *event {
-                        entity.rotate_z(MOUSE_VELOCITY * time.delta_seconds() * x as f32);
+                        entity.rotate_horizontal(MOUSE_VELOCITY * time.delta_seconds() * x as f32);
                     }
                 }
             }

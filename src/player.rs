@@ -45,7 +45,7 @@ pub fn initialise_player(world: &mut World) -> Entity {
     });
 
     let mut player_transform = Transform::default();
-    player_transform.set_translation_z(4.0);
+    player_transform.set_translation_y(2.0);
 
     world
         .create_entity()
