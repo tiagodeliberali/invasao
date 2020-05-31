@@ -11,6 +11,7 @@ use amethyst::{
     utils::application_root_dir,
 };
 
+mod entity3d;
 mod player;
 mod rpg;
 mod systems;

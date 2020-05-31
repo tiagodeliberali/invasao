@@ -1,3 +1,4 @@
+use crate::entity3d::Entity3d;
 use amethyst::{
     core::timing::Time,
     core::Transform,
@@ -32,12 +33,13 @@ impl<'s> System<'s> for CameraMoveSystem {
     );
 
     fn run(&mut self, (events, mut transforms, cameras, time): Self::SystemData) {
-        for (_, transform) in (&cameras, &mut transforms).join() {
+        for (_, mut transform) in (&cameras, &mut transforms).join() {
+            let mut entity = Entity3d::new(&mut transform);
+
             for event in events.read(&mut self.event_reader) {
                 if let Event::DeviceEvent { ref event, .. } = *event {
                     if let DeviceEvent::MouseMotion { delta: (_x, y) } = *event {
-                        let scaled_amount = VELOCITY * time.delta_seconds() * y as f32;
-                        transform.prepend_rotation_x_axis(-scaled_amount);
+                        entity.rotate_x(VELOCITY * time.delta_seconds() * y as f32);
                     }
                 }
             }
