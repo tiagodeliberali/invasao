@@ -63,7 +63,7 @@ fn initialise_floor(world: &mut World) {
             .with(mesh.clone())
             .with(material.clone())
             .with(transform)
-            .with(BoundingSphere::origin(2.0))
+            .with(BoundingSphere::origin(1.74))
             .build();
     }
 }

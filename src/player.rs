@@ -53,6 +53,6 @@ pub fn initialise_player(world: &mut World) -> Entity {
         .with(material)
         .with(Player::new())
         .with(player_transform)
-        .with(BoundingSphere::origin(2.0))
+        .with(BoundingSphere::origin(1.74))
         .build()
 }
