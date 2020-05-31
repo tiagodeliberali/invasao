@@ -20,6 +20,7 @@ use crate::player::initialise_player;
 fn initialise_camera(world: &mut World, parent: Entity) {
     let mut transform = Transform::default();
     transform.set_translation_xyz(0.0, 0.0, 3.0);
+    transform.set_rotation_x_axis(1.0);
 
     world
         .create_entity()
@@ -51,8 +52,8 @@ fn initialise_floor(world: &mut World) {
 
     for i in 0..100 {
         let mut transform = Transform::default();
-        let x = (i % 10) as f32 * 4.0_f32 - 20_f32;
-        let y = (i / 10) as f32 * 4.0_f32 - 20_f32;
+        let x = (i % 10) as f32 * 2.0_f32 - 10_f32;
+        let y = (i / 10) as f32 * 2.0_f32 - 10_f32;
 
         transform.set_translation_xyz(x, y, 0.0);
 
