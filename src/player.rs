@@ -67,7 +67,7 @@ pub fn initialise_player(world: &mut World) {
         .with(material)
         .with(Player::new())
         .with(player_transform)
-        .with(BoundingSphere::origin(1.74))
+        .with(BoundingSphere::origin(2.0))
         .build();
 
     initialise_camera(world, player);
