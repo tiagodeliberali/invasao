@@ -4,6 +4,7 @@ use amethyst::{
     ecs::prelude::Entity,
     prelude::*,
     renderer::{
+        visibility::BoundingSphere,
         camera::Camera,
         light::{Light, PointLight},
         mtl::{Material, MaterialDefaults},
@@ -62,6 +63,7 @@ fn initialise_floor(world: &mut World) {
             .with(mesh.clone())
             .with(material.clone())
             .with(transform)
+            .with(BoundingSphere::origin(2.0))
             .build();
     }
 }

@@ -4,6 +4,7 @@ use amethyst::{
     ecs::prelude::{Component, DenseVecStorage, Entity},
     prelude::*,
     renderer::{
+        visibility::BoundingSphere,
         mtl::{Material, MaterialDefaults},
         rendy::mesh::{Normal, Position, Tangent, TexCoord},
         shape::Shape,
@@ -52,5 +53,6 @@ pub fn initialise_player(world: &mut World) -> Entity {
         .with(material)
         .with(Player::new())
         .with(player_transform)
+        .with(BoundingSphere::origin(2.0))
         .build()
 }
