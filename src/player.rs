@@ -1,13 +1,14 @@
 use amethyst::{
     assets::AssetLoaderSystemData,
-    core::transform::Transform,
+    core::transform::{Parent, Transform},
     ecs::prelude::{Component, DenseVecStorage, Entity},
     prelude::*,
     renderer::{
-        visibility::BoundingSphere,
+        camera::Camera,
         mtl::{Material, MaterialDefaults},
         rendy::mesh::{Normal, Position, Tangent, TexCoord},
         shape::Shape,
+        visibility::BoundingSphere,
         Mesh,
     },
 };
@@ -24,7 +25,20 @@ impl Component for Player {
     type Storage = DenseVecStorage<Self>;
 }
 
-pub fn initialise_player(world: &mut World) -> Entity {
+fn initialise_camera(world: &mut World, parent: Entity) {
+    let mut transform = Transform::default();
+    transform.set_translation_y(4.0);
+    // transform.set_rotation_z_axis(1.0);
+
+    world
+        .create_entity()
+        .with(Camera::standard_3d(1024.0, 768.0))
+        .with(Parent { entity: parent })
+        .with(transform)
+        .build();
+}
+
+pub fn initialise_player(world: &mut World) {
     let mesh = world.exec(|loader: AssetLoaderSystemData<'_, Mesh>| {
         loader.load_from_data(
             Shape::Cube
@@ -47,12 +61,14 @@ pub fn initialise_player(world: &mut World) -> Entity {
     let mut player_transform = Transform::default();
     player_transform.set_translation_y(2.0);
 
-    world
+    let player = world
         .create_entity()
         .with(mesh)
         .with(material)
         .with(Player::new())
         .with(player_transform)
         .with(BoundingSphere::origin(1.74))
-        .build()
+        .build();
+
+    initialise_camera(world, player);
 }

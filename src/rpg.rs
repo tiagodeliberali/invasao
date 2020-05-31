@@ -1,35 +1,20 @@
 use amethyst::{
     assets::AssetLoaderSystemData,
-    core::{transform::Transform, Parent},
-    ecs::prelude::Entity,
+    core::transform::Transform,
     prelude::*,
     renderer::{
-        visibility::BoundingSphere,
-        camera::Camera,
         light::{Light, PointLight},
         mtl::{Material, MaterialDefaults},
         palette::rgb::Rgb,
         rendy::mesh::{Normal, Position, Tangent, TexCoord},
         shape::Shape,
+        visibility::BoundingSphere,
         Mesh,
     },
     window::{MonitorIdent, Window},
 };
 
 use crate::player::initialise_player;
-
-fn initialise_camera(world: &mut World, parent: Entity) {
-    let mut transform = Transform::default();
-    transform.set_translation_xyz(0.0, 3.0, 0.0);
-    transform.set_rotation_x_axis(1.0);
-
-    world
-        .create_entity()
-        .with(Camera::standard_3d(1024.0, 768.0))
-        .with(Parent { entity: parent })
-        .with(transform)
-        .build();
-}
 
 fn initialise_floor(world: &mut World) {
     let mesh = world.exec(|loader: AssetLoaderSystemData<'_, Mesh>| {
@@ -77,7 +62,7 @@ fn initialize_light(world: &mut World) {
     .into();
 
     let mut transform = Transform::default();
-    transform.set_translation_xyz(0.0, 10.0, 0.0);
+    transform.set_translation_xyz(5.0, 10.0, 5.0);
 
     world.create_entity().with(light).with(transform).build();
 }
@@ -91,8 +76,7 @@ impl SimpleState for Rpg {
 
         initialise_floor(world);
         initialize_light(world);
-        let player = initialise_player(world);
-        initialise_camera(world, player);
+        initialise_player(world);
         enter_fullscreen(world);
     }
 }
